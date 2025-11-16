@@ -1,0 +1,53 @@
+{
+  "openvpn": [
+    {
+      "auth": "SHA1",
+      "auth_nocache": true,
+      "ca": "ca.pem",
+      "cert": "cert.pem",
+      "cipher": "AES-128-GCM",
+      "comp_lzo": "adaptive",
+      "crl_verify": "crl.pem",
+      "data_ciphers": [
+        {
+          "cipher": "AES-256-GCM",
+          "optional": false
+        },
+        {
+          "cipher": "AES-128-GCM",
+          "optional": false
+        },
+        {
+          "cipher": "CHACHA20-POLY1305",
+          "optional": true
+        }
+      ],
+      "data_ciphers_fallback": "AES-128-GCM",
+      "dev": "tap0",
+      "dev_type": "tap",
+      "dh": "dh.pem",
+      "duplicate_cn": true,
+      "engine": "rsax",
+      "fast_io": true,
+      "group": "nogroup",
+      "keepalive": "20 60",
+      "key": "key.pem",
+      "log": "/var/log/openvpn.log",
+      "mode": "server",
+      "mssfix": 1450,
+      "mtu_disc": "no",
+      "mute_replay_warnings": true,
+      "name": "test-server",
+      "persist_key": true,
+      "persist_tun": true,
+      "port": 1194,
+      "proto": "udp",
+      "script_security": 0,
+      "status": "/var/log/openvpn.status 10",
+      "status_version": 1,
+      "tls_server": true,
+      "user": "nobody",
+      "verb": 3
+    }
+  ]
+}

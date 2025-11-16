@@ -1,0 +1,23 @@
+syntax = "proto3";
+
+package netjson.vxlan.v1;
+
+import "netjson/common/v1/common.proto";
+import "netjson/wireguard/v1/wireguard.proto";
+import "validate/validate.proto";
+
+option go_package = "github.com/honeybbq/netjson/gen/go/netjson/vxlan/v1;vxlanv1";
+
+message VxlanConfig {
+  repeated VxlanTunnel vxlan = 1;
+  repeated netjson.wireguard.v1.WireguardTunnel wireguard = 2;
+  repeated netjson.common.v1.IncludedFile files = 3;
+}
+
+message VxlanTunnel {
+  string name = 1 [(validate.rules).string = {min_len: 2, max_len: 15, pattern: "^[^\\s]*$"}];
+  // if auto_vni is true, controller will auto-assign a VNI.
+  bool auto_vni = 2;
+  uint32 vni = 3 [(validate.rules).uint32 = {lte: 16777216}];
+}
+

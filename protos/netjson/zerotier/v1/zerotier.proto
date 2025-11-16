@@ -1,0 +1,78 @@
+syntax = "proto3";
+
+package netjson.zerotier.v1;
+
+import "netjson/common/v1/common.proto";
+import "validate/validate.proto";
+
+option go_package = "github.com/honeybbq/netjson/gen/go/netjson/zerotier/v1;zerotierv1";
+
+message ZerotierConfig {
+  repeated ZerotierNetwork zerotier = 1;
+  repeated netjson.common.v1.IncludedFile files = 2;
+}
+
+message ZerotierNetwork {
+  string name = 1 [(validate.rules).string = {min_len: 1, max_len: 63}];
+  string network_id = 2 [(validate.rules).string = {pattern: "^[0-9A-Fa-f]{16}$"}];
+  bool private = 3;
+  bool enable_broadcast = 4;
+  ClientOptions client_options = 5;
+  DnsSettings dns = 6;
+  repeated IpAssignmentPool ip_assignment_pools = 7;
+  uint32 mtu = 8;
+  uint32 multicast_limit = 9;
+  AssignModeIpv4 v4_assign_mode = 10;
+  AssignModeIpv6 v6_assign_mode = 11;
+  repeated ManagedRoute routes = 12;
+  repeated FlowRule rules = 13;
+  repeated ZerotierTag tags = 14;
+  repeated string capabilities = 15;
+  string remote_trace_target = 16;
+  uint32 remote_trace_level = 17;
+}
+
+message ClientOptions {
+  bool allow_managed = 1;
+  bool allow_global = 2;
+  bool allow_default = 3;
+  bool allow_dns = 4;
+}
+
+message DnsSettings {
+  string domain = 1;
+  repeated string servers = 2;
+}
+
+message IpAssignmentPool {
+  string start = 1 [(validate.rules).string = {ip: true}];
+  string end = 2 [(validate.rules).string = {ip: true}];
+}
+
+message ManagedRoute {
+  string target = 1;
+  string via = 2;
+}
+
+message AssignModeIpv4 {
+  bool auto_assign = 1;
+}
+
+message AssignModeIpv6 {
+  bool auto_assign = 1;
+  bool enable_6plane = 2;
+  bool enable_rfc4193 = 3;
+}
+
+message FlowRule {
+  string type = 1;
+  uint32 ether_type = 2;
+  bool not = 3;
+  bool or = 4;
+}
+
+message ZerotierTag {
+  string name = 1;
+  repeated uint32 values = 2;
+}
+

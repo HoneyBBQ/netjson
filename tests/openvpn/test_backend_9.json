@@ -1,0 +1,17 @@
+{
+  "openvpn": [
+    {
+      "ca": "ca.pem",
+      "cert": "cert.pem",
+      "dev": "tap0",
+      "dev_type": "tap",
+      "dh": "dh.pem",
+      "key": "key.pem",
+      "mode": "server",
+      "name": "bridged-proxy",
+      "proto": "udp",
+      "server_bridge": "",
+      "tls_server": true
+    }
+  ]
+}

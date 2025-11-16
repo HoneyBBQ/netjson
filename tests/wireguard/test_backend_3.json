@@ -1,0 +1,16 @@
+{
+  "wireguard": [
+    {
+      "address": "10.0.0.1/24",
+      "name": "test1",
+      "peers": [
+        {
+          "allowed_ips": "10.0.0.3/32",
+          "public_key": "jqHs76yCH0wThMSqogDshndAiXelfffUJVcFmz352HI="
+        }
+      ],
+      "port": 40842,
+      "private_key": "QFdbnuYr7rrF4eONCAs7FhZwP7BXX/jD/jq2LXCpaXI="
+    }
+  ]
+}

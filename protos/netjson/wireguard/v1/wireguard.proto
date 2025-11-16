@@ -1,0 +1,39 @@
+syntax = "proto3";
+
+package netjson.wireguard.v1;
+
+import "netjson/common/v1/common.proto";
+import "validate/validate.proto";
+
+option go_package = "github.com/honeybbq/netjson/gen/go/netjson/wireguard/v1;wireguardv1";
+
+// WireguardConfig mirrors schemas/wireguard.json.
+message WireguardConfig {
+  repeated WireguardTunnel wireguard = 1;
+  repeated netjson.common.v1.IncludedFile files = 2;
+}
+
+message WireguardTunnel {
+  string name = 1 [(validate.rules).string = {min_len: 2, max_len: 15, pattern: "^[^\\s]*$"}];
+  optional uint32 port = 2 [(validate.rules).uint32 = {gte: 1, lte: 65535, ignore_empty: true}];
+  string private_key = 3 [(validate.rules).string = {max_len: 44, pattern: "^[^\\s]*$"}];
+  repeated string dns = 4;
+  optional uint32 mtu = 5 [(validate.rules).uint32 = {gte: 0, ignore_empty: true}];
+  optional string table = 6;
+  optional string pre_up = 7;
+  optional string post_up = 8;
+  optional string pre_down = 9;
+  optional string post_down = 10;
+  optional bool save_config = 11;
+  repeated WireguardPeer peers = 12;
+  optional string address = 13;
+}
+
+message WireguardPeer {
+  string public_key = 1 [(validate.rules).string = {min_len: 1, max_len: 44, pattern: "^[^\\s]*$"}];
+  string allowed_ips = 2 [(validate.rules).string = {min_len: 1}];
+  string endpoint_host = 3;
+  optional uint32 endpoint_port = 4 [(validate.rules).uint32 = {gte: 1, lte: 65535, ignore_empty: true}];
+  string preshared_key = 5 [(validate.rules).string = {max_len: 44, pattern: "^[^\\s]*$"}];
+}
+

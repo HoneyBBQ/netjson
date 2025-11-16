@@ -1,0 +1,13 @@
+{
+  "openvpn": [
+    {
+      "ca": "TEST",
+      "cert": "TEST",
+      "dev": "TEST",
+      "dev_type": "TEST",
+      "dh": "TEST",
+      "key": "TEST",
+      "name": "test"
+    }
+  ]
+}

@@ -1,0 +1,95 @@
+syntax = "proto3";
+
+package netjson.openvpn.v1;
+
+import "netjson/common/v1/common.proto";
+import "validate/validate.proto";
+
+option go_package = "github.com/honeybbq/netjson/gen/go/netjson/openvpn/v1;openvpnv1";
+
+message OpenVpnConfig {
+  repeated OpenVpnInstance openvpn = 1;
+  repeated netjson.common.v1.IncludedFile files = 2;
+}
+
+message OpenVpnInstance {
+  string name = 1 [(validate.rules).string = {min_len: 2, max_len: 24, pattern: "^[0-9A-Za-z_-]*$"}];
+  optional string mode = 2 [(validate.rules).string = {min_len: 1}];
+  optional string proto = 3 [(validate.rules).string = {min_len: 1}];
+  optional uint32 port = 4 [(validate.rules).uint32 = {lte: 65535, ignore_empty: true}];
+  string dev = 5 [(validate.rules).string = {min_len: 2}];
+  optional string dev_type = 6;
+  optional string ca = 7;
+  optional string cert = 8;
+  optional string key = 9;
+  optional string pkcs12 = 10;
+  optional string tls_auth = 11;
+  optional string tls_cipher = 12;
+  optional uint32 tls_timeout = 13;
+  optional string tls_remote_cert = 14;
+  optional string cipher = 15;
+  optional string dh = 16;
+  optional bool tls_server = 17;
+  optional string server = 18;
+  optional string server_bridge = 19;
+  repeated DataCipher data_ciphers = 20;
+  optional string data_ciphers_fallback = 21;
+  optional string auth = 22;
+  optional bool auth_nocache = 23;
+  optional string auth_user_pass = 24;
+  optional string auth_user_pass_verify = 25;
+  optional string auth_retry = 26;
+  optional string comp_lzo = 27;
+  optional bool fast_io = 28;
+  optional bool float = 29;
+  optional uint32 fragment = 30;
+  optional uint32 mssfix = 31;
+  optional bool mtu_test = 32;
+  optional string mtu_disc = 33;
+  optional string keepalive = 34;
+  optional bool persist_key = 35;
+  optional bool persist_tun = 36;
+  optional uint32 script_security = 37;
+  optional string status = 38;
+  optional uint32 status_version = 39;
+  optional bool mute_replay_warnings = 40;
+  optional uint32 mute = 41;
+  optional string log = 42;
+  optional string user = 43;
+  optional string group = 44;
+  optional uint32 verb = 45;
+  optional string up = 46;
+  optional string down = 47;
+  optional string local = 48;
+  optional bool nobind = 49;
+  optional bool pull = 50;
+  optional bool remote_random = 51;
+  optional string resolv_retry = 52;
+  optional bool tls_client = 53;
+  optional bool remote_cert_tls = 54;
+  optional string ns_cert_type = 55;
+  repeated RemoteEndpoint remote = 56;
+  optional bool tun_ipv6 = 57;
+  optional string secret = 58;
+  optional string engine = 59;
+  optional bool duplicate_cn = 60;
+  optional bool client_to_client = 61;
+  optional bool client_cert_not_required = 62;
+  optional bool ns_cert_client = 63;
+  optional string topology = 64;
+  optional bool username_as_common_name = 65;
+  optional string crl_verify = 66;
+  optional uint32 up_delay = 67;
+}
+
+message DataCipher {
+  string cipher = 1 [(validate.rules).string = {min_len: 1}];
+  optional bool optional = 2;
+}
+
+message RemoteEndpoint {
+  string host = 1 [(validate.rules).string = {min_len: 1}];
+  optional uint32 port = 2 [(validate.rules).uint32 = {lte: 65535, ignore_empty: true}];
+  optional string proto = 3;
+}
+

@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package netjson.common.v1;
+
+import "validate/validate.proto";
+
+option go_package = "github.com/honeybbq/netjson/gen/go/netjson/common/v1;commonv1";
+
+message IncludedFile {
+  string path = 1 [(validate.rules).string = {min_len: 2}];
+  string mode = 2 [(validate.rules).string = {min_len: 3, max_len: 4, pattern: "^[0-7]*$"}];
+  string contents = 3;
+}
+

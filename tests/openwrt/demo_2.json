@@ -1,0 +1,82 @@
+{
+    "interfaces": [
+        {
+            "wireless": {
+                "network": [
+                    "lan"
+                ],
+                "mode": "access_point",
+                "radio": "radio0",
+                "ack_distance": 0,
+                "rts_threshold": 0,
+                "frag_threshold": 0,
+                "ssid": "test-openwisp",
+                "hidden": false,
+                "wds": false,
+                "encryption": {
+                    "protocol": "wpa2_personal_mixed",
+                    "key": "xunin123456",
+                    "disabled": false,
+                    "cipher": "ccmp",
+                    "ieee80211w": "1"
+                },
+                "wmm": true,
+                "isolate": false,
+                "ieee80211r": false,
+                "reassociation_deadline": 1000,
+                "ft_psk_generate_local": false,
+                "ft_over_ds": true,
+                "rsn_preauth": false,
+                "macfilter": "disable",
+                "maclist": []
+            },
+            "type": "wireless",
+            "name": "wlan0",
+            "mtu": 1500,
+            "disabled": false,
+            "network": "",
+            "mac": "",
+            "autostart": true,
+            "addresses": []
+        },
+        {
+            "wireless": {
+                "network": [
+                    "lan"
+                ],
+                "mode": "access_point",
+                "radio": "radio1",
+                "ack_distance": 0,
+                "rts_threshold": 0,
+                "frag_threshold": 0,
+                "ssid": "openwisp-test",
+                "hidden": false,
+                "wds": false,
+                "encryption": {
+                    "protocol": "wpa2_personal_mixed",
+                    "key": "xunin123456",
+                    "disabled": false,
+                    "cipher": "ccmp",
+                    "ieee80211w": "1"
+                },
+                "wmm": true,
+                "isolate": false,
+                "ieee80211r": false,
+                "reassociation_deadline": 1000,
+                "ft_psk_generate_local": false,
+                "ft_over_ds": true,
+                "rsn_preauth": false,
+                "macfilter": "disable",
+                "maclist": []
+            },
+            "type": "wireless",
+            "name": "wlan1",
+            "mtu": 1500,
+            "disabled": false,
+            "network": "",
+            "mac": "",
+            "autostart": true,
+            "addresses": []
+        }
+    ]
+}

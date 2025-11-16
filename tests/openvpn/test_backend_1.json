@@ -1,0 +1,18 @@
+{
+  "openvpn": [
+    {
+      "ca": "ca.pem",
+      "cert": "cert.pem",
+      "dev": "tap0",
+      "dev_type": "tap",
+      "dh": "dh.pem",
+      "key": "key.pem",
+      "mode": "server",
+      "name": "test",
+      "proto": "udp",
+      "status": "",
+      "status_version": 1,
+      "tls_server": true
+    }
+  ]
+}

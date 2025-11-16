@@ -1,0 +1,23 @@
+{
+  "wireguard": [
+    {
+      "address": "10.0.0.1/24",
+      "name": "test1",
+      "peers": [
+        {
+          "allowed_ips": "10.0.0.3/32",
+          "public_key": "jqHs76yCH0wThMSqogDshndAiXelfffUJVcFmz352HI="
+        },
+        {
+          "allowed_ips": "10.0.0.4/32",
+          "endpoint_host": "192.168.1.35",
+          "endpoint_port": 4908,
+          "preshared_key": "xisFXck9KfEZga4hlkproH6+86S8ki1tmLtMtqVipjg=",
+          "public_key": "94a+MnZSdzHCzOy5y2K+0+Xe7lQzaa4v7lEiBZ7elVE="
+        }
+      ],
+      "port": 40842,
+      "private_key": "QFdbnuYr7rrF4eONCAs7FhZwP7BXX/jD/jq2LXCpaXI="
+    }
+  ]
+}

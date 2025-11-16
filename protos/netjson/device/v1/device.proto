@@ -1,0 +1,367 @@
+syntax = "proto3";
+
+package netjson.device.v1;
+
+import "netjson/common/v1/common.proto";
+import "validate/validate.proto";
+
+option go_package = "github.com/honeybbq/netjson/gen/go/netjson/device/v1;devicev1";
+
+// DeviceConfig captures the core NetJSON DeviceConfiguration fields we care about
+// for home CPE scenarios.
+message DeviceConfig {
+  repeated string dns_search = 1;
+  repeated string dns_servers = 2 [(validate.rules).repeated = {unique: true}];
+  repeated netjson.common.v1.IncludedFile files = 3;
+  optional General general = 4;
+  repeated Interface interfaces = 5;
+  repeated StaticRoute routes = 6;
+  repeated Radio radios = 7;
+}
+
+message General {
+  optional string hostname = 1 [(validate.rules).string = {max_len: 63}];
+  optional string timezone = 2;
+  optional string maintainer = 3;
+  optional string description = 4;
+  optional string ula_prefix = 5;
+  optional string zonename = 6;
+  optional string notes = 7;
+  optional uint32 buffer_size_kb = 8;
+  optional uint32 console_log_level = 9;
+  optional uint32 cron_log_level = 10;
+  optional uint32 kernel_console_log_level = 11;
+  optional uint32 log_buffer_size_kb = 12;
+  optional string log_file = 13;
+  optional string log_hostname = 14;
+  optional string log_ip = 15;
+  optional uint32 log_port = 16 [(validate.rules).uint32 = {lte: 65535, ignore_empty: true}];
+  optional string log_prefix = 17;
+  optional string log_protocol = 18;
+  optional bool log_remote = 19;
+  optional uint32 log_size_kb = 20;
+  optional bool log_trailer_null = 21;
+  optional string log_type = 22;
+  optional bool tty_login_required = 23;
+  optional bool urandom_seed_enabled = 24;
+  optional string zram_compression = 25;
+  optional uint32 zram_size_mb = 26;
+  optional string globals_id = 27;
+}
+
+message Interface {
+  string name = 1 [(validate.rules).string = {min_len: 2, max_len: 15, pattern: "^[^\\s]*$"}];
+  string type = 2 [(validate.rules).string = {min_len: 1}];
+  optional uint32 mtu = 3 [(validate.rules).uint32 = {gte: 68}];
+  optional bool disabled = 4;
+  optional string mac = 5 [(validate.rules).string = {pattern: "^(([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})|)$", ignore_empty: true}];
+  optional bool autostart = 6;
+  repeated InterfaceAddress addresses = 7;
+  optional WirelessSettings wireless = 8;
+  repeated string bridge_members = 9;
+  optional uint32 txqueuelen = 10;
+  optional bool igmp_snooping = 11;
+  optional bool stp = 12;
+  optional string network = 13;
+  optional string proto = 14;
+  optional string device = 15;
+  repeated string ifname = 16;
+  repeated VlanFiltering vlan_filtering = 53;
+  optional bool force_link = 17;
+  optional uint32 metric = 18;
+  optional string ip4_table = 19;
+  optional string ip6_table = 20;
+  optional bool delegate = 21;
+  optional bool ipv6 = 22;
+  optional uint32 ip6_assign = 23;
+  repeated string ip6_addr = 24;
+  optional string ip6_gateway = 25;
+  repeated string ip6_prefix = 26;
+  repeated string ip6_class = 27;
+  optional string ip6_hint = 28;
+  optional string ip6_ifaceid = 29;
+  optional bool ip6_deprecated = 30;
+  optional bool source_filter = 31;
+  repeated string dns = 32;
+  optional uint32 dns_metric = 33;
+  repeated string dns_search = 34;
+  optional bool peer_dns = 35;
+  optional string dhcp_hostname = 36;
+  optional string dhcp_client_id = 37;
+  optional string dhcp_vendor_id = 38;
+  repeated string dhcp_request_options = 39;
+  repeated string dhcp_send_options = 40;
+  optional bool default_route = 41;
+  repeated string custom_routes = 42;
+  optional bool broadcast = 43;
+  optional string firewall_zone = 44;
+  optional BridgeSettings bridge = 45;
+  optional TunnelSettings tunnel = 46;
+  optional WireguardInterfaceSettings wireguard = 47;
+  optional MobileSettings mobile = 48;
+  optional VirtualSettings virtual_settings = 49;
+  optional PppSettings ppp = 50;
+  optional bool no_host_route = 51;
+  optional string fwmark = 52;
+}
+
+message WirelessSettings {
+  string radio = 1 [(validate.rules).string = {min_len: 1}];
+  string mode = 2 [(validate.rules).string = {min_len: 1}];
+  optional string ssid = 3;
+  optional string bssid = 4;
+  optional WirelessEncryption encryption = 5;
+  repeated string network = 6;
+  optional uint32 ack_distance = 7;
+  optional uint32 rts_threshold = 8;
+  optional uint32 frag_threshold = 9;
+  optional string mesh_id = 10;
+  optional bool hidden = 11;
+  optional bool wds = 12;
+  optional bool wmm = 13;
+  optional bool isolate = 14;
+  optional bool ieee80211r = 15;
+  optional uint32 reassociation_deadline = 16;
+  optional bool ft_psk_generate_local = 17;
+  optional bool ft_over_ds = 18;
+  optional bool rsn_preauth = 19;
+  optional string macfilter = 20;
+  repeated string maclist = 21;
+  optional bool disabled = 22;
+  optional string ifname = 23;
+  optional uint32 max_associations = 24;
+  optional string macaddr_override = 25;
+  optional uint32 wpa_version = 26;
+  optional string wpa_cipher = 27;
+  optional string wpa2_cipher = 28;
+  optional uint32 wpa_group_rekey_seconds = 29;
+  optional uint32 wpa_pairwise_rekey_seconds = 30;
+  optional uint32 wpa_gmk_rekey_seconds = 31;
+  optional string wpa_psk_file = 32;
+  optional bool disable_eapol_key_retries = 33;
+  optional string auth_server = 34;
+  optional uint32 auth_port = 35 [(validate.rules).uint32 = {lte: 65535, ignore_empty: true}];
+  optional string auth_secret = 36;
+  optional string acct_server = 37;
+  optional uint32 acct_port = 38 [(validate.rules).uint32 = {lte: 65535, ignore_empty: true}];
+  optional string acct_secret = 39;
+  optional string nas_identifier = 40;
+  optional string own_ip_address = 41;
+  optional bool dynamic_vlan = 42;
+  optional bool wps_pushbutton = 43;
+  optional bool wps_label = 44;
+  optional string wps_pin = 45;
+  optional string wps_config = 46;
+  optional string wps_device_type = 47;
+  optional string wps_device_name = 48;
+  optional string wps_manufacturer = 49;
+  optional bool ieee80211k = 50;
+  optional bool rrm_neighbor_report = 51;
+  optional bool rrm_beacon_report = 52;
+  optional bool ieee80211v = 53;
+  optional bool bss_transition = 54;
+  optional bool wnm_sleep_mode = 55;
+  optional bool time_advertisement = 56;
+  optional string r1_key_holder = 57;
+  optional bool pmk_r1_push = 58;
+  optional uint32 r0_key_lifetime = 59;
+  optional uint32 max_listen_interval = 60;
+  optional uint32 dtim_period = 61;
+  optional uint32 beacon_interval = 62;
+  optional uint32 listen_interval = 63;
+  optional uint32 max_inactivity_seconds = 64;
+  optional bool skip_inactivity_poll = 65;
+  optional bool disassoc_low_ack = 66;
+  optional uint32 multicast_rate = 67;
+  optional bool broadcast_ssid = 68;
+  optional bool multicast_to_unicast = 69;
+  optional bool doth = 70;
+  optional bool short_preamble = 71;
+  optional bool start_disabled = 72;
+  optional string owe_transition_ssid = 73;
+  optional string owe_transition_bssid = 74;
+  optional string eap_type = 75;
+  optional string auth_method = 76;
+  optional string identity = 77;
+  optional string password = 78;
+  optional string ca_cert = 79;
+  optional string client_cert = 80;
+  optional string private_key = 81;
+  optional string private_key_password = 82;
+  optional bool tdls_prohibit = 83;
+  optional string iapp_interface = 84;
+}
+
+message WirelessEncryption {
+  optional string protocol = 1;
+  optional string cipher = 2;
+  optional string key = 3;
+  optional bool disabled = 4;
+  optional string ieee80211w = 5;
+  optional string server = 6;
+  optional uint32 port = 7 [(validate.rules).uint32 = {lte: 65535, ignore_empty: true}];
+  optional string acct_server = 8;
+  optional uint32 acct_server_port = 9 [(validate.rules).uint32 = {lte: 65535, ignore_empty: true}];
+  repeated string wep_keys = 10;
+  optional uint32 wep_key_index = 11;
+  optional uint32 ieee80211w_max_timeout = 12;
+  optional uint32 ieee80211w_retry_timeout = 13;
+}
+
+message InterfaceAddress {
+  optional string address = 1;
+  optional uint32 mask = 2;
+  optional string gateway = 3;
+  optional string proto = 4;
+  optional string family = 5;
+}
+
+message BridgeSettings {
+  optional uint32 forward_delay = 1;
+  optional uint32 hello_time = 2;
+  optional uint32 priority = 3;
+  optional uint32 ageing_time = 4;
+  optional bool multicast_querier = 5;
+  optional uint32 max_age = 6;
+  optional uint32 query_interval = 7;
+  optional uint32 query_response_interval = 8;
+  optional uint32 last_member_interval = 9;
+  optional uint32 hash_max = 10;
+  optional uint32 robustness = 11;
+}
+
+message VlanFiltering {
+  uint32 vlan = 1 [(validate.rules).uint32 = {gte: 1, lte: 4094}];
+  repeated VlanPort ports = 2;
+}
+
+message VlanPort {
+  string ifname = 1 [(validate.rules).string = {min_len: 1}];
+  string tagging = 2 [(validate.rules).string = {in: ["t", "u"]}];
+  optional bool primary_vid = 3;
+}
+
+message TunnelSettings {
+  optional string peer_addr = 1;
+  optional string ip_addr = 2;
+  optional string ip6_addr = 3;
+  optional string ip6_prefix = 4;
+  optional string tunlink = 5;
+  optional bool tunnel_default_route = 6;
+  optional uint32 ttl = 7;
+  optional uint32 tos = 8;
+  optional uint32 ip6_prefix_len = 9;
+  optional uint32 ip4_prefix_len = 10;
+  optional string tunnel_id = 11;
+  optional string username = 12;
+  optional string password = 13;
+  optional string update_key = 14;
+  optional string server = 15;
+  optional uint32 checkup_interval = 16;
+  optional string pppd_options = 17;
+}
+
+message WireguardInterfaceSettings {
+  optional string private_key = 1;
+  optional string public_key = 2;
+  optional uint32 listen_port = 3;
+  repeated string addresses = 4;
+  optional string preshared_key = 5;
+  optional string endpoint = 6;
+  repeated string allowed_ips = 7;
+  repeated string routes = 8;
+  optional uint32 persistent_keepalive = 9;
+}
+
+message MobileSettings {
+  optional string device = 1;
+  optional string apn = 2;
+  optional string pin_code = 3;
+  optional string username = 4;
+  optional string password = 5;
+  optional string auth = 6;
+  optional string mode = 7;
+  optional string plmn_id = 8;
+  optional string pdp_type = 9;
+  optional uint32 profile = 10;
+  optional string service = 11;
+  optional string init_string = 12;
+  optional uint32 delay_seconds = 13;
+}
+
+message VirtualSettings {
+  optional string remote = 1;
+  optional string local = 2;
+  optional uint32 key = 3;
+  optional bool input_checksum = 4;
+  optional bool output_checksum = 5;
+  optional uint32 input_key = 6;
+  optional uint32 output_key = 7;
+  optional uint32 vni = 8;
+  optional uint32 port = 9;
+  optional string group = 10;
+  optional string input_interface = 11;
+  optional string output_interface = 12;
+  optional string tunnel_source = 13;
+  optional string tunnel_destination = 14;
+}
+
+message PppSettings {
+  optional string username = 1;
+  optional string password = 2;
+  optional string service = 3;
+  optional string server = 4;
+  optional uint32 keepalive_seconds = 5;
+  optional bool demand = 6;
+  optional uint32 idle_time_seconds = 7;
+}
+
+message StaticRoute {
+  string device = 1 [(validate.rules).string = {min_len: 1}];
+  string destination = 2 [(validate.rules).string = {min_len: 1}];
+  string next = 3 [(validate.rules).string = {min_len: 1}];
+  optional uint32 cost = 4;
+  optional string source = 5;
+  optional string name = 6;
+  optional string table = 7;
+  optional bool onlink = 8;
+  optional uint32 mtu = 9;
+  optional string type = 10;
+}
+
+message Radio {
+  string name = 1 [(validate.rules).string = {min_len: 1, max_len: 32}];
+  optional string phy = 2;
+  optional string country = 3;
+  string protocol = 4 [(validate.rules).string = {min_len: 1}];
+  optional uint32 channel = 5 [(validate.rules).uint32 = {lte: 177}];
+  optional uint32 tx_power = 7;
+  optional bool disabled = 8;
+  optional string driver_type = 9;
+  repeated uint32 channels = 10;
+  optional string band = 11;
+  optional string hwmode = 12;
+  optional string htmode = 13;
+  optional uint32 chanbw = 14;
+  optional uint32 tx_antenna = 15;
+  optional uint32 rx_antenna = 16;
+  optional uint32 antenna = 17;
+  optional bool diversity = 18;
+  optional uint32 distance = 19;
+  optional uint32 frag_threshold = 20;
+  optional uint32 rts_threshold = 21;
+  optional uint32 beacon_interval = 22;
+  optional uint32 basic_rate = 23;
+  optional uint32 supported_rates = 24;
+  optional string require_mode = 25;
+  optional bool legacy_rates = 26;
+  optional bool noscan = 27;
+  optional uint32 log_level = 28;
+  optional bool short_gi = 29;
+  optional bool greenfield = 30;
+  optional uint32 txqueuelen = 31;
+  optional bool dfs = 32;
+  optional bool country_ie = 33;
+  optional uint32 cell_density = 34;
+}
+

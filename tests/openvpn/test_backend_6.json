@@ -1,0 +1,72 @@
+{
+  "openvpn": [
+    {
+      "auth": "SHA256",
+      "auth_nocache": true,
+      "auth_user_pass": "",
+      "ca": "ca.pem",
+      "cert": "cert.pem",
+      "cipher": "AES-128-CBC",
+      "comp_lzo": "adaptive",
+      "dev": "tun0",
+      "dev_type": "tun",
+      "down": "/home/user/down-command.sh",
+      "engine": "",
+      "fast_io": false,
+      "fragment": 0,
+      "group": "",
+      "keepalive": "",
+      "key": "key.pem",
+      "local": "",
+      "log": "/var/log/openvpn.log",
+      "mode": "p2p",
+      "mssfix": 1450,
+      "mtu_disc": "yes",
+      "mtu_test": true,
+      "mute": 10,
+      "mute_replay_warnings": true,
+      "name": "test-client",
+      "nobind": true,
+      "ns_cert_type": "server",
+      "persist_key": true,
+      "persist_tun": true,
+      "port": 1195,
+      "proto": "tcp-client",
+      "pull": true,
+      "remote": [
+        {
+          "host": "vpn1.test.com",
+          "port": 1194
+        },
+        {
+          "host": "176.9.43.231",
+          "port": 1195,
+          "proto": "udp4"
+        },
+        {
+          "host": "176.9.43.232",
+          "port": 1195,
+          "proto": "auto"
+        },
+        {
+          "host": "176.9.43.233",
+          "port": 1196,
+          "proto": "udp6"
+        }
+      ],
+      "resolv_retry": "infinite",
+      "script_security": 1,
+      "secret": "",
+      "status": "/var/log/openvpn.status 30",
+      "status_version": 1,
+      "tls_auth": "tls_auth.key 1",
+      "tls_client": true,
+      "topology": "p2p",
+      "tun_ipv6": true,
+      "up": "/home/user/up-command.sh",
+      "up_delay": 10,
+      "user": "nobody",
+      "verb": 1
+    }
+  ]
+}

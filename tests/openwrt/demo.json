@@ -1,0 +1,86 @@
+{
+    "interfaces": [
+        {
+            "type": "bridge",
+            "stp": true,
+            "bridge_members": [
+                "lan",
+                "mesh0",
+                "wlan0"
+            ],
+            "name": "lan",
+            "mtu": 1500,
+            "disabled": false,
+            "addresses": [
+                {
+                    "proto": "dhcp",
+                    "family": "ipv4"
+                }
+            ],
+            "igmp_snooping": false
+        },
+        {
+            "wireless": {
+                "network": [
+                    "lan"
+                ],
+                "mode": "802.11s",
+                "radio": "radio0",
+                "ack_distance": 0,
+                "rts_threshold": 0,
+                "frag_threshold": 0,
+                "mesh_id": "mesh0",
+                "encryption": {
+                    "protocol": "wpa2_personal",
+                    "key": "0penW1SP0987654321",
+                    "disabled": false,
+                    "cipher": "auto",
+                    "ieee80211w": "0"
+                }
+            },
+            "type": "wireless",
+            "name": "mesh0",
+            "mtu": 1500,
+            "disabled": false
+        },
+        {
+            "wireless": {
+                "network": [
+                    "lan"
+                ],
+                "mode": "access_point",
+                "radio": "radio0",
+                "ssid": "Mesh AP",
+                "hidden": false,
+                "wds": false,
+                "encryption": {
+                    "protocol": "wpa2_personal_mixed",
+                    "key": "meshApTesting1234",
+                    "disabled": false,
+                    "cipher": "ccmp",
+                    "ieee80211w": "1"
+                },
+                "wmm": true,
+                "isolate": false,
+                "ieee80211r": true,
+                "reassociation_deadline": 1000,
+                "ft_psk_generate_local": false,
+                "ft_over_ds": true,
+                "rsn_preauth": false,
+                "macfilter": "disable",
+                "maclist": []
+            },
+            "type": "wireless",
+            "name": "wlan0",
+            "mtu": 1500,
+            "disabled": false
+        }
+    ],
+    "files": [
+        {
+            "path": "/etc/openwisp/pre-reload-hook",
+            "mode": "0700",
+            "contents": "#!/bin/sh\n\n# delete any br-lan definition to avoid conflicts\nuci delete network.device1\n\n# make sure radio is enabled and on the same channel\nband=$(uci get wireless.radio0.band)\nhwmode=$(uci get wireless.radio0.hwmode)\nif [ \"$band\" = \"2g\" ] || [ \"$hwmode\" = \"11g\" ]; then\n  channel=1\nelif [ \"$band\" = \"5g\" ] || [ \"$hwmode\" = \"11a\" ]; then\n  channel=36\nfi\nuci set wireless.radio0.channel=\"$channel\"\nuci set wireless.radio0.disabled='0'\nuci set wireless.radio0.country='US'  # feel free to customize the country code\nuci commit wireless\n\n# ensure DHCP server on the lan is disabled\nuci set dhcp.lan.ignore='1'\nuci set dhcp.lan.dhcpv6='disabled'\nuci set dhcp.lan.ra='disabled'\nuci commit dhcp\n\n# increase retries of the config test to account for\n# temporary network failures caused by the reloading of the wifi stack\nuci set openwisp.http.test_retries=8\nuci commit openwisp\n"
+        }
+    ]
+}

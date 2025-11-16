@@ -1,0 +1,34 @@
+{
+  "openvpn": [
+    {
+      "ca": "/etc/openvpn/ca.pem",
+      "cert": "/etc/openvpn/cert.pem",
+      "dev": "tap0",
+      "dev_type": "tap",
+      "dh": "/etc/openvpn/dh.pem",
+      "key": "/etc/openvpn/key.pem",
+      "mode": "server",
+      "name": "test",
+      "proto": "udp",
+      "status": "",
+      "status_version": 1,
+      "tls_auth": "#\n# 2048 bit OpenVPN static key\n#\n-----BEGIN OpenVPN Static key V1-----\ntls-auth-key\n-----END OpenVPN Static key V1-----",
+      "tls_server": true
+    },
+    {
+      "ca": "/etc/openvpn/ca2.pem",
+      "cert": "/etc/openvpn/cert2.pem",
+      "dev": "tap1",
+      "dev_type": "tap",
+      "dh": "/etc/openvpn/dh2.pem",
+      "key": "/etc/openvpn/key2.pem",
+      "mode": "server",
+      "name": "test2",
+      "proto": "udp",
+      "status": "",
+      "status_version": 1,
+      "tls_auth": "#\n# 2048 bit OpenVPN static key\n#\n-----BEGIN OpenVPN Static key V1-----\ntls-auth-key2\n-----END OpenVPN Static key V1-----",
+      "tls_server": true
+    }
+  ]
+}

@@ -1,0 +1,92 @@
+syntax = "proto3";
+
+package netjson.openwrt.v1;
+
+import "netjson/common/v1/common.proto";
+import "netjson/device/v1/device.proto";
+import "netjson/openvpn/v1/openvpn.proto";
+import "netjson/wireguard/v1/wireguard.proto";
+import "netjson/zerotier/v1/zerotier.proto";
+import "validate/validate.proto";
+
+option go_package = "github.com/honeybbq/netjson/gen/go/netjson/openwrt/v1;openwrtv1";
+
+message OpenWrtConfig {
+  repeated string dns_search = 1;
+  repeated string dns_servers = 2 [(validate.rules).repeated = {unique: true}];
+  repeated netjson.common.v1.IncludedFile files = 3;
+  netjson.device.v1.General general = 4;
+  repeated netjson.device.v1.Interface interfaces = 5;
+  repeated netjson.device.v1.StaticRoute routes = 6;
+  repeated netjson.device.v1.Radio radios = 7;
+  repeated IpRule ip_rules = 8;
+  repeated Led leds = 9;
+  NtpSettings ntp = 10;
+  repeated SwitchConfig switches = 11;
+  repeated WireguardPeerConfig wireguard_peers = 12;
+  repeated netjson.openvpn.v1.OpenVpnInstance openvpn = 13;
+  repeated netjson.zerotier.v1.ZerotierNetwork zerotier = 14;
+  repeated netjson.wireguard.v1.WireguardTunnel wireguard = 15;
+  optional string type = 16;
+}
+
+message IpRule {
+  optional string in = 1;
+  optional string out = 2;
+  optional string src = 3;
+  optional string dest = 4;
+  optional uint32 tos = 5;
+  optional string mark = 6;
+  optional string lookup = 7;
+  optional string action = 8 [(validate.rules).string = {in: ["prohibit", "unreachable", "blackhole", "throw"]}];
+  optional uint32 goto = 9;
+  optional bool invert = 10;
+  optional string name = 11;
+}
+
+message Led {
+  string name = 1 [(validate.rules).string = {min_len: 1}];
+  string sysfs = 2 [(validate.rules).string = {min_len: 1}];
+  string trigger = 3 [(validate.rules).string = {min_len: 1}];
+  optional bool default = 4;
+  optional uint32 delayoff = 5;
+  optional uint32 delayon = 6;
+  optional string dev = 7;
+  optional uint32 interval = 8;
+  optional string message = 9;
+  optional string mode = 10;
+}
+
+message NtpSettings {
+  optional bool enabled = 1;
+  optional bool enable_server = 2;
+  repeated string servers = 3;
+  optional string hostname = 4;
+  optional uint32 port = 5 [(validate.rules).uint32 = {lte: 65535, ignore_empty: true}];
+  repeated string pools = 6;
+}
+
+message SwitchConfig {
+  string name = 1 [(validate.rules).string = {min_len: 1}];
+  optional bool reset = 2;
+  optional bool enable_vlan = 3;
+  repeated SwitchVlan vlans = 4;
+}
+
+message SwitchVlan {
+  string device = 1 [(validate.rules).string = {min_len: 1}];
+  uint32 vlan_id = 2 [(validate.rules).uint32 = {gte: 1, lte: 4094}];
+  string ports = 3 [(validate.rules).string = {min_len: 1}];
+}
+
+message WireguardPeerConfig {
+  string interface = 1 [(validate.rules).string = {min_len: 2, max_len: 15, pattern: "^[^\\s]*$"}];
+  string public_key = 2 [(validate.rules).string = {min_len: 1, max_len: 44, pattern: "^[^\\s]*$"}];
+  repeated string allowed_ips = 3 [(validate.rules).repeated = {min_items: 1, unique: true}];
+  optional string endpoint_host = 4;
+  optional uint32 endpoint_port = 5 [(validate.rules).uint32 = {gte: 1, lte: 65535}];
+  optional string preshared_key = 6 [(validate.rules).string = {max_len: 44, pattern: "^[^\\s]*$"}];
+  optional uint32 persistent_keepalive = 7;
+  optional bool route_allowed_ips = 8;
+}
+
